@@ -1,0 +1,9 @@
+fonctionne : image.jpg , image1,image2, image3, image5, image6, IMG_5675,IMG_5683, IMG_5684,IMG_5688, IMG_5689, IMG_5692,IMG_5694, IMG_9238
+
+detecte d autre piece qu'il y a et ne detecte pas les bonnes valeurs des pieces : IMG_5686, IMG_5687, IMG_5690, IMG_5695,IMG_5696,
+IMG_5699, IMG_5700, IMG_5701,IMG_5702, IMG_5703, IMG_5704-IMG_5708, IMG_9059
+
+detection des pieces fonctionne mais pas les bonnes valeurs de pieces : IMG_5674,IMG_5676,IMG_5677, IMG_5679, IMG_5680,IMG_5681, IMG_5682,IMG_5698
+ IMG_5691, IMG_5693, IMG_5697, IMG_5709, IMG_9237, 
+
+detecte certaines pieces : IMG_5678
