@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Photo a analyser. Les dimensions sont normalisees avant la detection.
-chemin_image = './data/image1.jpg'
+chemin_image = './data/IMG_5698.jpg'
 devise_souhaitee = 'EUR'
 
 # Diametres des pieces courantes en circulation (millimetres).
