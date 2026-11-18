@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from scipy import ndimage
 from skimage.segmentation import watershed
 
-CHEMIN_IMAGE = "data/IMG_9238.jpg"
+CHEMIN_IMAGE = "data/IMG_5682.jpg"
 
 """
 liste des image qui marche +-
@@ -19,13 +19,13 @@ image3.jpg
 image5.jpg
 image6.jpg
 IMG_5674.jpg
-- piece de 10 tres similaire a la piece de 50 donc il pense que c'est une piece de 50
+- piece de 10 -> 50
 IMG_5675.jpg
 - pas de 50 et invente une piece de 1 donc il décale tout 
 IMG_5676.jpg
-- une piece de 1 qu'il surestime donc il pense que c'est une piece de 5
+- une piece de 1 -> 5
 IMG_5677.jpg
-- il y a de l'idee mais une piece de 1 -> 5 et une piece de 10 -> 50 (donc c'est plus subtil que ça)
+- une piece de 1 -> 5 et une piece de 10 -> 50
 IMG_5678.jpg
 - pas de 5 donc une piece de 1 -> 5
 IMG_5679.jpg
@@ -74,6 +74,7 @@ TAILLES_VALEURS = [50, 10, 5, 1]
 TAILLE_MAX_IMAGE = 1400
 TOLERANCE_REGROUPEMENT = 0.08
 RAPPORT_TAILLE_MANQUANTE = 1.25
+TAUX_TWD_VERS_EUR = 0.027
 
 
 @dataclass
@@ -84,12 +85,11 @@ class Piece:
     lab_b: float
     valeur: int | None = None
 
-
+"""on calcule le perimetre"""
 def score_contour_circulaire(
     gradients_x: np.ndarray, gradients_y: np.ndarray,
     x: float, y: float, rayon: float,
-) -> float:
-    """Mesure la continuit? du bord d'un cercle dans l'image r?duite."""
+    ) -> float:
     angles = np.linspace(0, 2 * math.pi, 72, endpoint=False)
     score = np.zeros(angles.shape, dtype=np.float32)
 
@@ -107,9 +107,8 @@ def score_contour_circulaire(
 
     return float(np.mean(score))
 
-
+"""on verifie la couleur pour double check"""
 def mesurer_couleur_chaude(image: np.ndarray, x: int, y: int, diametre: float) -> float:
-    """Mesure le jaune/doré au centre de la pièce, sans inclure son arrière-plan."""
     rayon = diametre / 2
     marge = max(1, round(rayon * 0.7))
     x_min, x_max = max(0, x - marge), min(image.shape[1], x + marge + 1)
@@ -122,9 +121,8 @@ def mesurer_couleur_chaude(image: np.ndarray, x: int, y: int, diametre: float) -
     lab = cv2.cvtColor(zone, cv2.COLOR_BGR2LAB)
     return float(np.median(lab[:, :, 2][masque]))
 
-
+"""detecte les cercle et envoir leur diametre et leur centre"""
 def detecter_pieces(image: np.ndarray) -> list[Piece]:
-    """Repère les cercles et renvoie leur centre et leur diamètre en pixels."""
     hauteur, largeur = image.shape[:2]
     facteur = min(1.0, TAILLE_MAX_IMAGE / max(hauteur, largeur))
 
@@ -294,9 +292,8 @@ def detecter_pieces(image: np.ndarray) -> list[Piece]:
 
     return pieces_filtrees
 
-
+"""rassemble les pieces par taille"""
 def regrouper_par_taille(pieces: list[Piece]) -> list[list[Piece]]:
-    """Rassemble les diamètres proches en groupes, du plus petit au plus grand."""
     groupes: list[list[Piece]] = []
 
     for piece in sorted(pieces, key=lambda p: p.diametre_px):
@@ -315,9 +312,8 @@ def regrouper_par_taille(pieces: list[Piece]) -> list[list[Piece]]:
 
     return groupes
 
-
+"""utilisation des couleurs pour separer les 50 et 10"""
 def attribuer_valeurs(groupes: list[list[Piece]]) -> None:
-    """Utilise la couleur pour séparer les 50 des 10, puis compare les diamètres."""
     pieces = [piece for groupe in groupes for piece in groupe]
     plus_grand_diametre = max(piece.diametre_px for piece in pieces)
     grandes_pieces = [
@@ -393,8 +389,13 @@ def attribuer_valeurs(groupes: list[list[Piece]]) -> None:
         for piece in groupe:
             piece.valeur = valeur
 
+"""bah on convertit"""
+def convertir_twd_en_eur(montant_twd: int) -> float:
+    """Convertit un montant en dollars taïwanais avec le taux configuré."""
+    return montant_twd * TAUX_TWD_VERS_EUR
 
 
+"""juste le main"""
 def main() -> None:
     image = cv2.imread(str(CHEMIN_IMAGE))
     if image is None:
@@ -421,6 +422,7 @@ def main() -> None:
     attribuer_valeurs(groupes)
 
     total = sum(piece.valeur or 0 for piece in pieces)
+    total_eur = convertir_twd_en_eur(total)
     inconnues = sum(piece.valeur is None for piece in pieces)
 
     print(f"Image : {CHEMIN_IMAGE}")
@@ -431,7 +433,8 @@ def main() -> None:
             f"  Pièce {numero} : diamètre environ {piece.diametre_px:.0f} px, "
             f"valeur estimée = {valeur}"
         )
-    print(f"Total estimé : {total}")
+    print(f"Total estimé : {total} TWD")
+    print(f"Montant converti : {total_eur:.2f} EUR")
 
     if inconnues:
         print(
@@ -474,7 +477,7 @@ def main() -> None:
         extent=(x_min - 0.5, x_max - 0.5, y_max - 0.5, y_min - 0.5),
     )
     plt.title(
-        f"Pièces détectées - total estimé : {total} "
+        f"Pièces détectées - total estimé : {total} TWD / {total_eur:.2f} EUR "
         f"({largeur_recadree} x {hauteur_recadree} px, recadrée)"
     )
     plt.xlabel("X (pixels, coordonnées de l'image originale)")
@@ -484,5 +487,6 @@ def main() -> None:
     plt.tight_layout()
     plt.show()
 
+"""et on relis le cours dans son lit"""
 if __name__ == "__main__":
     main()
