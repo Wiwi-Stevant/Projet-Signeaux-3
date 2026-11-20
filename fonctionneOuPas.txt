@@ -7,3 +7,29 @@ detection des pieces fonctionne mais pas les bonnes valeurs de pieces : IMG_5674
  IMG_5691, IMG_5693, IMG_5697, IMG_5709, IMG_9237, 
 
 detecte certaines pieces : IMG_5678
+
+
+
+moi et wiwi :
+
+fonctionne : 
+
+
+ 
+ 
+Rayan : 
+detection des pieces fonctionne mais met pas les bonnes valeurs : IMG_5674, IMG_5679
+IMG_5676 detecte 6 piece sur 7 et sur une des 6 pieces, il y a une erreur
+IMG_5677 detecte 4 piece sur 6 et sur une des 4 pieces, il y a quelque erreur
+IMG_5680 detecte toutes les pieces mais ne donne pas les bonnes valeurs de une seul piece
+IMG_5681 detecte toutes les pieces mais ne donne pas les bonnes valeurs de une seul piece (la piece de 5 qui met que c est une piece de 1)
+IMG_5682 detecte toutes les pieces mais ne donne pas les bonnes valeurs de la piece de 5 (il met que c est un 1) et la piece de 10 (il met que c est un 50)
+IMG_5698 detecte toutes les pieces mais ne donne pas les bonnes valeurs de plusieurs pieces
+wiwi : 
+detection des pieces fonctionne mais met pas les bonnes valeurs : IMG_5674
+IMG_5676 detecte toutes les piece mais ne donne pas la bonne valeur d une seul piece
+IMG_5677 detecte toutes les pieces mais ne donne pas les bonnes valeurs de deux pieces
+IMG_5680 detecte toutes les pieces mais ne donne pas les bonnes valeurs de une seul piece
+IMG_5681 detecte toutes les pieces mais ne donne pas les bonnes valeurs de toutes les pieces de 1(il met que c est des 5)
+IMG_5682 detecte toutes les pieces mais ne donne pas les bonnes valeurs d une piece de 5 (il met que c est un 1)
+IMG_5698 detecte toutes les pieces mais ne donne pas les bonnes valeurs de une seul piece (piece de 1 qui pense que c est un 5)
