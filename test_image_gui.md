@@ -1,4 +1,4 @@
-# Fichier pour vérifier si les images fonctionne avec le code dui GUI et de Rayan :
+# Fichier pour vérifier si les images fonctionne avec le code du GUI de Isma et Eliott et du code pièce de Rayan :
 
 ## Image qui sont valide :
 
