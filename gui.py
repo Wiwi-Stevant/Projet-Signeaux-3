@@ -11,7 +11,7 @@ from detecteur_piece2 import detecter_pieces, obtenir_taux_twd
 
 
 def afficher_image(image, panneau):
-    apercu = ImageOps.contain(image, (1080, 720))
+    apercu = ImageOps.contain(image, (820, 480))
     photo = ImageTk.PhotoImage(apercu)
     panneau.configure(image=photo, text="")
     panneau.photo = photo
